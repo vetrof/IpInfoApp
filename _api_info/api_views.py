@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from _api_info.utils.apiinfo import ipinfo
 
 
-class MyIpInfo(APIView):
+class IpInfo(APIView):
     def get(self, request):
         ip = request.META.get('HTTP_X_FORWARDED_FOR')
         context = ipinfo(ip)
