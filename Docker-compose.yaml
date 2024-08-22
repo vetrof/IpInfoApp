@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    entrypoint: /code/entrypoint.sh
+    expose:
+      - 8000
+    volumes:
+      - .:/code
+      - ./static/:/code/static
+      - media_volume:/home/app/web/media
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+#      - redis
+    restart: always
+
+  db:
+    image: postgres:15.1-alpine
+    expose:
+      - 5432
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${DB_NAME}" ]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 80s
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - media_volume:/code/media
+      - ./static/:/code/static
+      - ./.well-known/:/code/.well-known
+    ports:
+      - 8001:80
+    depends_on:
+      - web
+    env_file:
+      - ./.env
+    restart: always
+
+#  celery_worker:
+#    build: .
+#    command: celery -A __settings worker --loglevel=info
+#    volumes:
+#      - .:/code
+#
+#  celery_beat:
+#    build: .
+#    command: celery -A __settings beat --loglevel=info
+#
+#  redis:
+#    image: redis
+#    volumes:
+#      - redis_data:/data
+#    ports:
+#      - "6379:6379"
+#
+#  flower:
+#    image: mher/flower:0.9.5
+#    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
+#    ports:
+#      - 5555:5555
+
+volumes:
+  postgres_data:
+#  redis_data:
+  media_volume:
