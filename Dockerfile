@@ -10,7 +10,7 @@ WORKDIR /code
 
 # Копируем и устанавливаем зависимости
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt gunicorn
+RUN pip install -r requirements.txt
 
 # Установка Nginx
 RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*

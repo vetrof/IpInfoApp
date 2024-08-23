@@ -50,30 +50,30 @@ services:
       - ./.env
     restart: always
 
-#  celery_worker:
-#    build: .
-#    command: celery -A __settings worker --loglevel=info
-#    volumes:
-#      - .:/code
-#
-#  celery_beat:
-#    build: .
-#    command: celery -A __settings beat --loglevel=info
-#
-#  redis:
-#    image: redis
-#    volumes:
-#      - redis_data:/data
-#    ports:
-#      - "6379:6379"
-#
-#  flower:
-#    image: mher/flower:0.9.5
-#    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
-#    ports:
-#      - 5555:5555
+  celery_worker:
+    build: .
+    command: celery -A __settings worker --loglevel=info
+    volumes:
+      - .:/code
+
+  celery_beat:
+    build: .
+    command: celery -A __settings beat --loglevel=info
+
+  redis:
+    image: redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  flower:
+    image: mher/flower:0.9.5
+    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
+    ports:
+      - 5555:5555
 
 volumes:
   postgres_data:
-#  redis_data:
+  redis_data:
   media_volume:

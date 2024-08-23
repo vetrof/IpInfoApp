@@ -140,3 +140,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 IPINFOKEY = env('IPINFOKEY')
+
+# celery
+CELERY_BROKER_URL = 'redis://redis:6379/0'  # URL брокера сообщений (в данном случае Redis)
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'  # URL для хранения результатов задач

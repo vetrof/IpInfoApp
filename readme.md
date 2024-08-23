@@ -38,9 +38,21 @@
     pip install -r requirements.txt
     ```
 
-3. Добавьте ключ API для `ipinfo.io` в файл переменных окружения:
-
-    ```python
-    # .env
-    IPINFOKEY=key
     ```
+## .ENV
+
+3. Добавьте  в файл переменных окружения:
+
+    ```
+   MODE=prod
+
+   IPINFOKEY=
+
+   DB_NAME=psdb
+   POSTGRES_USER=psuser
+   POSTGRES_PASSWORD=pspassword
+
+   GUNICORN_WORKERS=3
+   GUNICORN_THREADS=2
+    ```
+
